@@ -1,4 +1,4 @@
-// This creates a weird twisty extrusion of 5 unioned circles and lots of rounding. Check it out!
+// This generates a basic wheel part
 $res = 5;
 
 inner_radius = 25;
