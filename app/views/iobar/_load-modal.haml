@@ -1,0 +1,17 @@
+.modal-header
+  %a.close{:"data-dismiss" => "modal"} ×
+  %h3 Open
+
+
+.modal-body
+
+  = render :partial => "iobar/file-modal", :locals => { placeholder_text: "Select a file to load" }
+
+
+.modal-footer
+  %button.btn.btn-primary{:"data-dismiss" => "modal"} Open
+  %button.btn{:"data-dismiss" => "modal"} Cancel
+  %button.btn.btn-danger.btn-delete
+    %i.icon-trash
+    Delete
+

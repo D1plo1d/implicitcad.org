@@ -12,4 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
+//= require_tree ../../../vendor/assets/javascripts/
+//= require_tree ./codemirror/
+//= require_tree ./iobar/
 //= require_tree .

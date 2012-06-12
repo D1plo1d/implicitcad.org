@@ -1,0 +1,56 @@
+.top-bar
+  height: 35px
+  background: url('/assets/60degree_gray.png')
+  padding:
+    top: 5px
+    left: 5px
+    right: 5px
+  h3
+    float: left
+  .io-bar
+    float: right
+
+
+.editor, .output
+  top: 40px
+  margin:
+    top: 5px
+    left: 5px
+    right: 5px
+    bottom: 9px
+  width: 46%
+  position: absolute
+  bottom: 0
+  border: 1px solid rgba(0, 0, 0, 0.15)
+
+
+.editor
+  .CodeMirror
+    height: 100%
+    .CodeMirror-scroll
+      height: 100%
+
+
+.output
+  right: 0px
+
+  h3
+    margin-bottom: 10px
+
+  .btns-output
+    float: right
+    margin-top: -1px
+
+  .viewer
+    clear: both
+    height: 300px
+    background-repeat: no-repeat
+    background-position: 50%, 50%
+
+    .stl-viewer
+      width: 100%
+      height: 300px
+
+  .console
+    .error
+      color: red

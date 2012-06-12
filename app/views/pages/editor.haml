@@ -1,0 +1,53 @@
+.top-bar
+  %h3 ExtOpenSCAD Cloud Prototype
+  .io-bar
+    %a.btn.btn-small.file-new{href: "#"}
+      %i.icon-file
+      New
+    %a.btn.btn-small.file-open{href: "#"}
+      %i.icon-folder-open
+      Open..
+    %a.btn.btn-small.file-save{href: "#"}
+      %i.icon-ok
+      Save
+    %a.btn.btn-small.file-save-as{href: "#"}
+      %i.icon-pencil
+      Save As..
+    //%a.btn.btn-small.file-cnc{href: "#"}
+    //  %i.icon-download-alt
+    //  Send to CNC
+    %a.btn.btn-small.logout{href: "/sessions/logout"}
+      %i.icon-lock
+      Log Out
+
+
+.editor_and_viewer_container
+  %pre.editor= escad_example(:demo)
+
+  .output.well
+    .btns-output
+      %a.btn.btn-zoom-out{href: "#"}
+        =#%i.icon-zoom-out
+        Zoom Out
+      %a.btn.btn.btn-zoom-in{href: "#"}
+        =#%i.icon-zoom-in
+        Zoom In
+      %a.btn.btn-primary.btn-render{href: "#"}
+        Render
+    %h3 Model
+    .well.viewer
+      .svg-viewer
+      .stl-viewer
+    %h3 Console
+    .well.console
+
+
+%script{:id=>"load-modal-template", :type=>"text/x-handlebars-template"}
+  = render :partial => "iobar/load-modal"
+
+%script{:id=>"save-as-modal-template", :type=>"text/x-handlebars-template"}
+  = render :partial => "iobar/save-as-modal"
+
+%script{:id=>"delete-files-warning-template", :type=>"text/x-handlebars-template"}
+  = render :partial => "iobar/delete-files-warning"
+

@@ -1,0 +1,20 @@
+%p
+  %b Note:
+  CAD Prototype A uses local storage to keep your CAD files in your browser. If you have something important that you don't want to loose DO NOT use CAD Prototype A without backups.
+%p
+  CAD Prototype A contains no magic and will not back up your files for you.
+
+.well
+  %ul.nav.nav-list.file-list
+    %li.nav-header Existing files
+    = "{{#each files }}"
+    %li{:"data-file-name" => "{{this}}"}
+      %a{:href => "#"}
+        %i
+        = "{{this}}"
+    = "{{/each}}"
+
+%form.form-inline
+  %label Select a File Name
+  %input.file-name-input.span3{:type => "text", :placeholder => placeholder_text}
+
