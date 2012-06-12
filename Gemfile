@@ -34,6 +34,7 @@ group :assets do
 
   # Railsified Assets
   gem 'jquery-rails'
+  gem 'jquery-ui-rails'
   gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass'
 
@@ -49,7 +50,7 @@ gem 'dalli'
 
 # Auth, Permissions and Administration
 gem 'authlogic'
-gem 'activeadmin'
+#gem 'activeadmin', "~> 0.4.4"
 gem 'bcrypt-ruby', '~> 3.0.0'
 
 
