@@ -1,11 +1,50 @@
 // This creates a weird twisty extrusion of 5 unioned circles and lots of rounding. Check it out!
 $res = 5;
-linear_extrude (height = 40, center=true, twist(h) = 35*cos(h*2*pi/60)) {
-  union ( r = 8) {
-    circle (10);
-    translate ([22,0]) circle (10);
-    translate ([0,22]) circle (10);
-    translate ([-22,0]) circle (10);
-    translate ([0,-22]) circle (10);
+
+inner_radius = 25;
+outer_radius = 100;
+
+spoke_length = 85;
+spoke_offset = 55;
+
+difference () {
+
+  union () {
+
+   	difference () { // spokes + hub
+
+      translate([0,0,-15]) linear_extrude (height = 20, center=true) {
+        union () {
+      
+          translate([0,-spoke_offset]) square ([20,spoke_length], center = true);
+          translate([0,spoke_offset]) square ([20,spoke_length], center = true);
+          translate([-spoke_offset,0]) square ([spoke_length,20], center = true);
+          translate([spoke_offset,0]) square ([spoke_length,20], center = true);
+  
+          circle (inner_radius);
+  
+        }
+     }
+    
+     linear_extrude(height = 100, center=true) { // hub cuts
+        circle (inner_radius-10);
+     } // end hub cuts
+
+	} // end spokes + hub
+
+    linear_extrude (height = 50, center=true, r= 5) { // rim extrusion
+      difference() {
+      	circle (outer_radius);
+        circle (outer_radius-20);
+      }
+	} // end rim extrusion
+
+  }
+
+  linear_extrude(height = 40, center=true) { // rim cuts
+    difference() {
+      circle (outer_radius);
+      circle (outer_radius-5);
+    } // end rim cuts
   }
 }
