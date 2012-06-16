@@ -1,4 +1,6 @@
-// This creates a weird twisty extrusion of 5 unioned circles and lots of rounding. Check it out!
+/* This creates a twisted extrusion of 5 unioned circles
+ * with gratuitous amounts of rounding. Try it out! */
+
 $res = 5;
 linear_extrude (height = 40, center=true, twist(h) = 35*cos(h*2*pi/60)) {
   union ( r = 8) {
