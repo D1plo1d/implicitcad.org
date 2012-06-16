@@ -4,6 +4,8 @@ ImplicitCadOrg::Application.routes.draw do
 
   match "editor", :to => "pages#editor"
 
+  match "examples/:example", :to => "pages#editor"
+
   match "render", :to => "renderers#render"
 
   # The priority is based upon order of creation:
