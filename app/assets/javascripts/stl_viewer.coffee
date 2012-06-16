@@ -9,6 +9,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
     @scene = new THREE.Scene()
 
+    @transparent = false
+
     #ambient = new THREE.AmbientLight( 0x666666 )
     #@scene.add( ambient )
 
@@ -22,7 +24,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
     spotLight = new THREE.SpotLight(0xffffff, 2)
     spotLight.position.set( 40, -30, 100 )
-    spotLight.shadowCameraNear = 0.001
+    spotLight.shadowCameraNear = 0.000001
     #spotLight.castShadow = true
     spotLight.shadowDarkness = 0.2
     #spotLight.shadowCameraVisible = true
@@ -71,21 +73,42 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @render()
 
 
+  setTransparent: (transparent, render = true) ->
+    @transparent = if transparent? then transparent else !@transparent
+    console.log @transparent
+    # Turning on transparent models
+    return unless @material?
+    @material.color = new THREE.Color(if @transparent then "0x522966" else "0x8844AA")
+    @material.opacity = if @transparent then 0.7 else 1.0
+    @render() if render
+    
+
   loadGeometry: (geometry) ->
     #geometry	= new THREE.TorusKnotGeometry(25, 8, 75, 20)
+    #geometry.mergeVertices()
+    #geometry.computeTangents()
+    #geometry.computeMorphNormals()
+
     @scene.remove( @mesh ) if @mesh?
     #material = new THREE.MeshLambertMaterial( { color: 0xaaccff, ambient: 0xaaccff } )
     #material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } )
     #material = new THREE.MeshPhongMaterial({ ambient: 0x050505, color: 0x5500ff, specular: 0x555555, shininess: 30 })
     #material = new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading})
-    material = new THREE.MeshPhongMaterial
+    @material = new THREE.MeshPhongMaterial
       ambient: 0x444444
       color: 0x8844AA
+      vertexColors: 0x8844AA
       shininess: 300
-      specular: 0x33AA33
+      specular: 0x8844AA
       shading: THREE.SmoothShading
+      wireframe: false # true for nice wireframes
+      wireframeLinewidth: 1
+      overdraw: true
+  #    morphTargets: true
+  #    morphNormals: true
+  #    perPixel: true
 
-    @mesh = new THREE.Mesh( geometry, material )
+    @mesh = new THREE.Mesh( geometry, @material )
     #@mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading}) )
     @mesh.doubleSided = true
     @mesh.overdraw = true
@@ -97,12 +120,17 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@mesh.rotation.x = -1.57/2
     #@mesh.position.z = -100
 
+    # for debugging
+    window.material = @material
+    window.mesh = @mesh
+
     #@scene.add( @mesh, material )
     @scene.add(@mesh)
     # reset rotation
     @mesh.rotation.x = -3/4 * Math.PI/2
     # reset mouse drag
     @dragging = false
+    @setTransparent(@transparent, false)
     @render()
     console.log "loaded geometry!"
 

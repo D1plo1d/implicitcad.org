@@ -25,6 +25,9 @@ $ ->
   # Zoom buttons
   $(".btn-zoom-out").click => $stlViewer.stlViewer("zoom", -1)
   $(".btn-zoom-in").click => $stlViewer.stlViewer("zoom", +1)
+  $(".btn-toggle-transparency").click =>
+    console.log "mooo"
+    $stlViewer.stlViewer("setTransparent")
 
   # Keyboard shortcuts (because OpenSCAD had lame keybindings)
   $keys = $(document).add("textarea")
