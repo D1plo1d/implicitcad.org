@@ -12,10 +12,10 @@ if env != "development"
 end
 
 if env == "development"
-  listen 8080
+  listen 8081
 else
   listen "/tmp/.sock", :backlog => 2048
-  listen 8080, :tcp_nopush => true
+  listen 8081, :tcp_nopush => true
 end
 
 before_fork do |server, worker|

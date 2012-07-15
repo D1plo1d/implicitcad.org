@@ -2,6 +2,10 @@ ImplicitCadOrg::Application.routes.draw do
 
   root :to => "pages#index"
 
+  match "docs", :to => "pages#docs"
+
+  match "dev", :to => "pages#dev"
+
   match "editor", :to => "pages#editor"
 
   match "examples/:example", :to => "pages#editor"

@@ -7,5 +7,11 @@
   = csrf_meta_tags
 
 %body
+  - unless @editor
+    .nav
+      %a{:href=> "/"}Home
+      %a{:href=> "/docs"}Docs
+      %a{:href=> "/editor"}Editor
+
   = yield
 
