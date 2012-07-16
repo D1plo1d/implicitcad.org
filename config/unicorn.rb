@@ -1,7 +1,7 @@
 env = ENV['RAILS_ENV'] || "development"
 
 
-worker_processes (env == "development" ? 8 : 16)
+worker_processes (env == "development" ? 8 : 8)
 preload_app true
 timeout 180
 
@@ -14,7 +14,7 @@ end
 if env == "development"
   listen 8081
 else
-  listen "/tmp/implicit-production.sock", :backlog => 2048
+  listen "implicit-production.sock", :backlog => 2048
   listen 8081, :tcp_nopush => true
 end
 

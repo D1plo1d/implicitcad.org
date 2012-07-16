@@ -1,0 +1,78 @@
+worker_processes 1;
+user nobody nobody;
+
+pid /tmp/nginx.pid;
+error_log /tmp/nginx.error.log;
+
+events {
+  worker_connections 1024; # increase if you have lots of clients
+  # Set this to on if you have more than 1 working processes
+  # This will allow only one child to watch the pollset and accept
+  # a connection to a socket
+  accept_mutex off; # "on" if nginx worker_processes > 1
+}
+
+http {
+  include mime.types;
+  default_type application/octet-stream;
+  access_log /tmp/nginx.access.log combined;
+
+  # This tells Nginx to ignore the contents of a file it is sending
+  # and uses the kernel sendfile instead
+  sendfile on;
+
+  # Set this to on if you have sendfile on
+  # It will prepend the HTTP response headers before
+  # calling sendfile()
+  tcp_nopush on;
+
+  # This disables the "Nagle buffering algorithm" (Nginx Docs)
+  # Good for websites that send a lot of small requests that
+  # don't need a response
+  tcp_nodelay off;
+
+  gzip on;
+  gzip_http_version 1.0;
+  gzip_proxied any;
+  gzip_min_length 500;
+  gzip_disable "MSIE [1-6]\.";
+  gzip_types text/plain text/html text/xml text/css
+             text/comma-separated-values
+             text/javascript application/x-javascript
+             application/atom+xml;
+
+  upstream unicorn_server {
+   # This is the socket we configured in unicorn.rb
+   server unix:/home/implicitcad/implicit-cad.org-production/implicit-production.sock »
+   fail_timeout=0;
+  }
+
+  server {
+    listen 80;
+    client_max_body_size 4G;
+    server_name _;
+
+    keepalive_timeout 5;
+
+    # Location of our static files
+    root /home/implicitcad/implicit-cad.org-production/public;
+
+    location / {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+
+      # If you don't find the filename in the static files
+      # Then request it from the unicorn server
+      if (!-f $request_filename) {
+        proxy_pass http://localhost:8081
+        break;
+      }
+    }
+
+    error_page 500 502 503 504 /500.html;
+    location = /500.html {
+      root /home/implicitcad/implicit-cad.org-production/public;
+    }
+  }
+}
