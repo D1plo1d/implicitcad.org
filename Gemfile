@@ -12,7 +12,7 @@ gem 'mysql2', :group => :production
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+#group :assets do
 
   # Asset Compilers
 
@@ -38,7 +38,7 @@ group :assets do
   gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass'
 
-end
+#end
 
 
 # Use unicorn as the app server
