@@ -54,7 +54,6 @@ $ ->
       # erroring out on stderr
       if response["stderr"]? and response["stderr"].trim().length > 0
         $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{response["stderror"]}</p>")
-        rendering_error()
         return
       # erroring out on no data
       return rendering_error() if response["data"].length == 0

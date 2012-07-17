@@ -26,6 +26,7 @@ module ExtOpenScad
       puts "extopenscad complete!"
 
       # respond with the output file
+      puts files[:output].path
       response_data = File.open( files[:output].path ).read
     ensure
       # kill the temp files with fire!
