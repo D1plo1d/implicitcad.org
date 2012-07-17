@@ -1,7 +1,7 @@
 env = ENV['RAILS_ENV'] || "development"
 
 
-worker_processes (env == "development" ? 8 : 16)
+worker_processes (env == "development" ? 8 : 8)
 preload_app true
 timeout 30
 
