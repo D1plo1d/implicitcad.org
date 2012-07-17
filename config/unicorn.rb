@@ -5,17 +5,18 @@ worker_processes (env == "development" ? 8 : 8)
 preload_app true
 timeout 180
 
-if env != "development"
-  pid "tmp/pids/unicorn.pid"
-  stderr_path "log/unicorn_#{env}.log"
-  stdout_path "log/unicorn_#{env}.log"
-end
+#if env != "development"
+#  pid "tmp/pids/unicorn.pid"
+#  stderr_path "log/unicorn_#{env}.log"
+#  stdout_path "log/unicorn_#{env}.log"
+#end
 
 if env == "development"
   listen 8081
 else
-  listen "./implicit-production.sock", :backlog => 2048
-  listen 8081, :tcp_nopush => true
+  listen 9000
+  # listen "/tmp/.implicit-production-sock", :backlog => 2048
+  # listen 8081, :tcp_nopush => true
 end
 
 before_fork do |server, worker|
