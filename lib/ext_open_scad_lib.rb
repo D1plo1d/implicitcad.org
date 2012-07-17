@@ -1,24 +1,30 @@
 module ExtOpenScad
   def self.compile!(scad_script)
-    puts "\n"*5
+    puts "moooo\n"*2
     puts scad_script
     puts "\n"*3
 
     # create the temp files
-    files = Hash[ {input: ".scad", output: ".js"}.collect { |sym, ext| [sym, Tempfile.new(["loljk", ext])] } ]
+puts `whoami`    
+puts "thats done now"
+    files = Hash[ {input: ".scad", output: ".js"}.collect { |sym, ext| [sym, Tempfile.new(["loljk", ext], File.join(Rails.root, "tmp", "scads"))] } ]
+    puts files.inspect
     stdin, stdout, stderr = [nil, nil, nil]
     response_data = ""
 
     begin
-      # close the temp files immediately to save on file handles
-      files.each {|sym, f| f.close(false)}
 
+      puts "Begining the render!!"
       # load the scad script in to the input file
       files[:input].write(scad_script)
-      files[:input].close
-      #File.open(files[:input], 'w') {|f| f.write(scad_script) }
+
+# close the temp files immediately to save on file handles
+      files.each {|sym, f| f.close(false)}      
+#File.open(files[:input], 'w') {|f| f.write(scad_script) }
 
       puts "running extopenscad..."
+
+puts `whoami`
 
       # process the input with the extopenscad js exporter
       hs_lib = File.expand_path( File.join File.dirname(__FILE__), "hs", "ImplicitExportJS.hs" )
@@ -30,6 +36,9 @@ module ExtOpenScad
       # respond with the output file
       puts files[:output].path
       response_data = File.open( files[:output].path ).read
+    rescue(e)
+      puts "Rendering Error"
+      puts e.backtrace
     ensure
       # kill the temp files with fire!
       files.each {|sym, f| f.unlink}

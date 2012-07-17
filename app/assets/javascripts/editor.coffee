@@ -51,6 +51,7 @@ $ ->
     post = $.post '/render', codeMirror.getValue(), "script"
 
     post.success (response) ->
+      puts response
       # erroring out on stderr
       if response["stderr"]? and response["stderr"].trim().length > 0
         $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{response["stderror"]}</p>")
