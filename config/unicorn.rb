@@ -14,7 +14,8 @@ timeout 180
 if env == "development"
   listen 8081
 else
-  listen 9000
+  listen 80
+  user "implicitcad"
   # listen "/tmp/.implicit-production-sock", :backlog => 2048
   # listen 8081, :tcp_nopush => true
 end
