@@ -14,7 +14,9 @@ module ExtOpenScad
       files.each {|sym, f| f.close(false)}
 
       # load the scad script in to the input file
-      File.open(files[:input], 'w') {|f| f.write(scad_script) }
+      files[:input].write(scad_script)
+      files[:input].close
+      #File.open(files[:input], 'w') {|f| f.write(scad_script) }
 
       puts "running extopenscad..."
 
