@@ -1,9 +1,9 @@
 env = ENV['RAILS_ENV'] || "development"
 
 
-worker_processes (env == "development" ? 8 : 8)
+worker_processes (env == "development" ? 8 : 16)
 preload_app true
-timeout 180
+timeout 30
 
 #if env != "development"
 #  pid "tmp/pids/unicorn.pid"
@@ -11,13 +11,12 @@ timeout 180
 #  stdout_path "log/unicorn_#{env}.log"
 #end
 
-if env == "development"
-  listen 8081
-else
-  listen 80
-  # listen "/tmp/.implicit-production-sock", :backlog => 2048
-  # listen 8081, :tcp_nopush => true
-end
+#if env == "development"
+  listen 9001
+#else
+#  listen "/tmp/.sock", :backlog => 2048
+#  listen 8080, :tcp_nopush => true
+#end
 
 before_fork do |server, worker|
   ##
