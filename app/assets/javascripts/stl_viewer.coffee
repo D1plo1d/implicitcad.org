@@ -99,10 +99,10 @@ $.widget "ui.stlViewer", $.ui.mouse,
       ambient: 0xffffff
       color: 0x8844AA
       vertexColors: 0x8844AA
-      shininess: 300
+      shininess: 1
       specular: 0x8844AA
       shading: THREE.SmoothShading
-      wireframe: true # true for nice wireframes
+      wireframe: false # true for nice wireframes
       wireframeLinewidth: 4
       overdraw: true
   #    morphTargets: true

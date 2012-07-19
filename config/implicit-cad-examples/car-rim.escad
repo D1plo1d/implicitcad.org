@@ -1,3 +1,5 @@
+$res = 3;
+
 // This generates a basic car rim part
 inner_radius = 25;
 outer_radius = 100;
@@ -12,7 +14,7 @@ difference () {
    	difference () { // spokes + hub
 
       translate([0,0,-15]) linear_extrude (height = 20, center=true) {
-        union () {
+        union (r=10) {
       
           translate([0,-spoke_offset]) square ([20,spoke_length], center = true);
           translate([0,spoke_offset]) square ([20,spoke_length], center = true);
