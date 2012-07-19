@@ -11,27 +11,28 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
     @transparent = false
 
-    #ambient = new THREE.AmbientLight( 0x666666 )
-    #@scene.add( ambient )
+    ambient = new THREE.AmbientLight( 0x8844AA )
+    @scene.add( ambient )
 
 
     directionalLight = new THREE.DirectionalLight( 0xffffff )
     directionalLight.position.set( 40, -30, 100 )
     directionalLight.target.position.set(0,0,0)
-    directionalLight.shadowCameraVisible = true
-    directionalLight.castShadow = true
+    directionalLight.shadowCameraVisible = false
+    directionalLight.castShadow = false
+    directionalLight.intensity = 0.4
     @scene.add( directionalLight )
 
-    spotLight = new THREE.SpotLight(0xffffff, 2)
+    spotLight = new THREE.SpotLight(0xffffff, 0.1)
     spotLight.position.set( 40, -30, 100 )
     spotLight.shadowCameraNear = 0.000001
-    #spotLight.castShadow = true
+    spotLight.castShadow = false
     spotLight.shadowDarkness = 0.2
     #spotLight.shadowCameraVisible = true
     @scene.add( spotLight )
 
     # For debugging purposes
-    #window.ambientLight = ambient
+    window.ambientLight = ambient
     window.dLight = directionalLight
     window.spotLight = spotLight
 
@@ -95,14 +96,14 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #material = new THREE.MeshPhongMaterial({ ambient: 0x050505, color: 0x5500ff, specular: 0x555555, shininess: 30 })
     #material = new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading})
     @material = new THREE.MeshPhongMaterial
-      ambient: 0x444444
+      ambient: 0xffffff
       color: 0x8844AA
       vertexColors: 0x8844AA
       shininess: 300
       specular: 0x8844AA
       shading: THREE.SmoothShading
-      wireframe: false # true for nice wireframes
-      wireframeLinewidth: 1
+      wireframe: true # true for nice wireframes
+      wireframeLinewidth: 4
       overdraw: true
   #    morphTargets: true
   #    morphNormals: true
