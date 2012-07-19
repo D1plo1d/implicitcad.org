@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module ExtOpenScad
   def self.compile!(scad_script)
     puts "moooo\n"*2
@@ -7,10 +9,12 @@ module ExtOpenScad
     # create the temp files
 puts `whoami`    
 puts "thats done now"
+    FileUtils.mkpath(File.join Rails.root, "tmp", "scads")
     files = Hash[ {input: ".scad", output: ".js"}.collect { |sym, ext| [sym, Tempfile.new(["loljk", ext], File.join(Rails.root, "tmp", "scads"))] } ]
     puts files.inspect
     stdin, stdout, stderr = [nil, nil, nil]
     response_data = ""
+    puts "moo cows! LOL!"
 
     begin
 
@@ -43,7 +47,13 @@ puts `whoami`
       # kill the temp files with fire!
       files.each {|sym, f| f.unlink}
       #recording the streams
-      response = { :format => "THREE.Geometry", :data => response_data, :stdout => (stdout.gets || ""), :stderr => (stderr.gets || "") }
+      response = { :format => "THREE.Geometry", :data => response_data, :stdout => (stdout.read || ""), :stderr => (stderr.read || "") }
+      if response[:data].blank?
+        response[:stderr] = response[:stdout] + response[:stderr]
+        response[:stdout] = ""
+      end
+      puts response[:stdout]
+      puts response[:stderr].red
       # closing the output streams
       stdin.close unless stdin.nil?
       stdout.close unless stdout.nil?

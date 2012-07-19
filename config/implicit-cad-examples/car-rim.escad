@@ -1,6 +1,4 @@
 // This generates a basic car rim part
-$res = 5;
-
 inner_radius = 25;
 outer_radius = 100;
 
