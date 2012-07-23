@@ -78,6 +78,7 @@ gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap', :git => "git://github.com/f3ndot/will_paginate-bootstrap.git"
 gem 'colored'
 gem 'rdiscount'
+gem 'rest-client'
 
 
 # To use Jbuilder templates for JSON
