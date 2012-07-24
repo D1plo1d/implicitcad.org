@@ -7,6 +7,9 @@ class RenderersController < ApplicationController
 
   def render
 
+    #implicitcad_api_server = Rails.env.development? "localhost:3000" : "23.21.177.106:3000"
+    implicitcad_api_server = "23.21.177.106:3000"
+
     # SCAD => STL
     # ==========================================
 
@@ -19,10 +22,16 @@ class RenderersController < ApplicationController
     scad_file = Tempfile.new("scad")
 
     begin
+      request.body.rewind
       scad_file.write(request.body.read)
       scad_file.close(false)
-      api_response = RestClient.post('localhost:3000/v1/render', :file => File.new(scad_file)) {|response, request, result| response }
+
+      puts  "\n\n" + "-"*30 + "\n\n" + IO.read(scad_file.path) + "\n\n"
+
+      api_response = RestClient.post("#{implicitcad_api_server}/v1/render", :file => File.new(scad_file)) {|response, request, result| response }
       api_json = JSON.parse api_response.to_s
+
+      puts api_json["message"].inspect + "\n\n" + "-"*30
     #rescue Exception => e
     #  puts [ "\n<Error>".red, [e.message, e.backtrace], "</Error>\n".red ].flatten(2).join("\n")
     ensure
