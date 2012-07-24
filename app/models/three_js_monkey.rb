@@ -82,4 +82,13 @@ Shape.prototype.constructor = Shape;
     return js + self.footer
   end
 
+
+  # New Relic Performance Hook
+  if defined? NewRelic
+    class << self
+      include NewRelic::Agent::Instrumentation::ControllerInstrumentation
+      add_method_tracer :compile_js, 'Custom/ThreeJSMonkey/compile_js', :metric => false
+    end
+  end
+
 end

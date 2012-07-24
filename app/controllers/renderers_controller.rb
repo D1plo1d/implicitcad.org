@@ -5,10 +5,7 @@ class RenderersController < ApplicationController
 
   respond_to :json
 
-  def render
-
-    #implicitcad_api_server = Rails.env.development? "localhost:3000" : "23.21.177.106:3000"
-    implicitcad_api_server = "23.21.177.106:3000"
+  def render_scad
 
     # SCAD => STL
     # ==========================================
@@ -28,7 +25,7 @@ class RenderersController < ApplicationController
 
       puts  "\n\n" + "-"*30 + "\n\n" + IO.read(scad_file.path) + "\n\n"
 
-      api_response = RestClient.post("#{implicitcad_api_server}/v1/render", :file => File.new(scad_file)) {|response, request, result| response }
+      api_response = extopenscad File.new(scad_file)
       api_json = JSON.parse api_response.to_s
 
       puts api_json["message"].inspect + "\n\n" + "-"*30
@@ -61,13 +58,25 @@ class RenderersController < ApplicationController
     # Response
     # ==========================================
 
-    response.body = {
+    #response.body = {
+    data = {
       :stdout => api_json["message"],
       :stderr => errored ? (api_json["message"].present? ? api_json["message"] : "Uh oh, that went horribly wrong. Try again?") : "",
       :data => defined?(js) ? js : "",
       :format => "THREE.Geometry"
-    }.to_json
-    response.headers["Content-Type"] = "json"
+    }
+    render :json => data
+    #response.headers["Content-Type"] = "json"
   end
+
+
+  def extopenscad(f)
+    #implicitcad_api_server = Rails.env.development? ? "localhost:3000" : "23.21.177.106:3000"
+    implicitcad_api_server = "23.21.177.106:3000"
+
+    RestClient.post("#{implicitcad_api_server}/v1/render", :file => f) {|response, request, result| response }
+  end
+
+  add_method_tracer :extopenscad, 'Custom/RenderController/extopenscad', :metric => true
 
 end

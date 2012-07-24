@@ -10,7 +10,7 @@ ImplicitCadOrg::Application.routes.draw do
 
   match "examples/:example", :to => "pages#editor"
 
-  match "render", :to => "renderers#render"
+  match "render", :to => "renderers#render_scad"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

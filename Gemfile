@@ -79,7 +79,7 @@ gem 'will_paginate-bootstrap', :git => "git://github.com/f3ndot/will_paginate-bo
 gem 'colored'
 gem 'rdiscount'
 gem 'rest-client'
-
+gem 'newrelic_rpm'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
