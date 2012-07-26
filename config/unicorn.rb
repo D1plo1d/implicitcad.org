@@ -3,7 +3,7 @@ env = ENV['RAILS_ENV'] || "development"
 
 worker_processes (env == "development" ? 8 : 8)
 preload_app true
-timeout 30
+timeout 400
 
 #if env != "development"
 #  pid "tmp/pids/unicorn.pid"

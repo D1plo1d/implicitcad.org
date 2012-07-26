@@ -1,0 +1,11 @@
+Use this directory as the place to build the binaries, but please
+don't check them in. I've added a few scripts to make things a bit
+easier, but I should migrate to make, soon.
+
+To build:
+
+$ ./build.sh
+
+To clean:
+
+$ ./clean.sh

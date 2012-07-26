@@ -48,6 +48,9 @@ $ ->
 
   $(".btn-render").click =>
     $(".console").html("<p><span class='label label-info'>Please hold.</span> Our best server imps are now rendering your file.</p>")
+    
+    $(".stl-viewer").stlViewer("clearGeometry")
+
     post = $.post '/render', codeMirror.getValue(), "script"
 
     post.success (response) ->
@@ -67,6 +70,28 @@ $ ->
 
       # displaying the output in a viewer
       $(".stl-viewer").stlViewer("loadSTL", response["data"]) if response["format"] == "stl"
+
+      if response["format"] == "utf-8"
+        $(".stl-viewer").stlViewer( "clearGeometry" )
+        geometries = 0
+        merged_model = null
+
+        callback = (current_model) =>
+          geometries += 1
+
+          # Merging the partial geometries
+          if merged_model != null
+            THREE.GeometryUtils.merge(merged_model, current_model)
+          else
+            merged_model = current_model
+
+          # Once the geometry is complete load it in to the viewer
+          if geometries == response["data"].length
+            $(".stl-viewer").stlViewer( "loadGeometry", merged_model )
+
+        for utf in response["data"]
+          new THREE.UTF8Loader.prototype.createModel utf, callback, 100, 0,0,0
+
       if response["format"] == "THREE.Geometry"
         eval( response["data"] )
         $(".stl-viewer").stlViewer( "loadGeometry", new Shape() )

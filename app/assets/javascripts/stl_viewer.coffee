@@ -82,15 +82,22 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @material.color = new THREE.Color(if @transparent then "0x522966" else "0x8844AA")
     @material.opacity = if @transparent then 0.7 else 1.0
     @render() if render
-    
 
-  loadGeometry: (geometry) ->
+
+  clearGeometry: (geometry) ->
+    return unless @mesh?
+    @scene.remove( @mesh )
+    @render()
+
+
+  loadGeometry: (geometry, append = false) ->
     #geometry	= new THREE.TorusKnotGeometry(25, 8, 75, 20)
     #geometry.mergeVertices()
     #geometry.computeTangents()
     #geometry.computeMorphNormals()
+    THREE.GeometryUtils.center(geometry)
 
-    @scene.remove( @mesh ) if @mesh?
+    @clearGeometry()
     #material = new THREE.MeshLambertMaterial( { color: 0xaaccff, ambient: 0xaaccff } )
     #material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } )
     #material = new THREE.MeshPhongMaterial({ ambient: 0x050505, color: 0x5500ff, specular: 0x555555, shininess: 30 })
@@ -113,6 +120,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading}) )
     @mesh.doubleSided = true
     @mesh.overdraw = true
+
     #@mesh.castShadow = true
     #@mesh.receiveShadow = true
 

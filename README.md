@@ -11,6 +11,10 @@
 1. Set the rails environment to one of production, staging or development. For example: `export RAILS_ENV=production`.
 2. `ruby ./script/unicorn_server.rb`
 
+## Notes
+
+ImplicitCAD.org uses r50 of webgl loader
+
 ## License
 
 ImplicitCAD.org is released under the MIT license:
