@@ -93,6 +93,7 @@ $ ->
           new THREE.UTF8Loader.prototype.createModel utf, callback, 100, 0,0,0
 
       if response["format"] == "THREE.Geometry"
+        console.log "js!"
         eval( response["data"] )
         $(".stl-viewer").stlViewer( "loadGeometry", new Shape() )
 

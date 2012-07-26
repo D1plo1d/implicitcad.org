@@ -7,7 +7,7 @@ var Shape = function(){
   var s = this;
   THREE.Geometry.call(this);
   function vec(x,y,z){return new THREE.Vector3(x,y,z);}
-  function v(x,y,z){s.vertices.push(new THREE.Vertex(vec(x,y,z)));}
+  function v(x,y,z){s.vertices.push(vec(x,y,z));}
   function f(a,b,c,nx,ny,nz){
     s.faces.push( new THREE.Face3(a,b,c,vec(nx,ny,nz)) );
   }
