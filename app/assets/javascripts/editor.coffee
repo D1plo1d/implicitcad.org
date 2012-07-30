@@ -40,12 +40,6 @@ $ ->
 
 
   # Sending the code to the server to render
-  rendering_error = ->
-    $(".console").append "<p class='error'><span class='label label-important'>Error</span> <b>Oh no!</b> Something has gone wrong while we were rendering your file</p>"
-    $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
-    $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
-
-
   $(".btn-render").click =>
     $(".console").html("<p><span class='label label-info'>Please hold.</span> Our best server imps are now rendering your file.</p>")
     
@@ -53,6 +47,35 @@ $ ->
 
     post = $.post '/render', codeMirror.getValue(), "script"
 
+    post.success (response) ->
+      console.log response["url"]
+      poll = =>
+        console.log "polling"
+        $.ajax response["url"], async: false, contentType: "application/json", dataType: 'jsonp', success: (response) ->
+          console.log response
+          if response["status"] == 500
+            $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{response["std_io"].replace("\n", "<br/>")}</p>")
+          if response["status"] == 202
+            poll.delay(500)
+          if response["status"] == 201
+            $(".console").append("<p>#{response["std_io"].replace("\n", "<br/>")}</p>")
+
+            if response["format"] == "stl"
+              $(".stl-viewer").stlViewer("loadSTL", response["output"])
+            if response["format"] == "THREE.Geometry"
+              console.log "js!"
+              eval( response["output"] )
+              $(".stl-viewer").stlViewer( "loadGeometry", new Shape() )
+            
+          return true
+      poll.delay(500)
+
+    post.error ->
+      $(".console").append "<p class='error'><span class='label label-important'>Error</span> <b>Oh no!</b> Something has gone wrong while we were rendering your file</p>"
+      $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
+      $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
+
+    ###
     post.success (response) ->
       console.log response
       # erroring out on stderr
@@ -99,5 +122,4 @@ $ ->
 
       # W00t it worked!
       $(".console").append "<p><span class='label label-success'>Success</span> Your file has rendered successfully. The server imps are very happy.</p>"
-
-    post.error rendering_error
+    ###
