@@ -16,7 +16,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
 
     directionalLight = new THREE.DirectionalLight( 0xffffff )
-    directionalLight.position.set( 40, -100, 100 )
+    directionalLight.position.set( 40000, -100000, -100000 )
     directionalLight.target.position.set(0,0,0)
     directionalLight.shadowCameraVisible = false
     directionalLight.castShadow = false
@@ -24,7 +24,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @scene.add( directionalLight )
 
     spotLight = new THREE.SpotLight(0xffffff, 0.1)
-    spotLight.position.set( 40, -100, 100 )
+    spotLight.position.set( 40000, -100000, 100000 )
     spotLight.shadowCameraNear = 0.000001
     spotLight.castShadow = false
     spotLight.shadowDarkness = 0.2
