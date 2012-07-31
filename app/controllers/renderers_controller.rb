@@ -18,10 +18,10 @@ class RenderersController < ApplicationController
       scad_file.write(request.body.read)
       scad_file.close(false)
 
-      puts  "\n\n" + "-"*30 + "\n\n" + IO.read(scad_file.path) + "\n\n"
+      #puts  "\n\n" + "-"*30 + "\n\n" + IO.read(scad_file.path) + "\n\n"
 
       api_response = extopenscad File.new(scad_file), output_format
-      api_json = JSON.parse api_response.to_s
+      api_json = JSON.parse api_response.body
     ensure
       scad_file.close(true) if defined? scad_file
     end
@@ -35,12 +35,29 @@ class RenderersController < ApplicationController
 
   def api_server_url
     #implicitcad_api_server = Rails.env.development? ? "localhost:3000" : "23.21.177.106:3000"
-    implicitcad_api_server = Rails.env.development? ? "192.168.111.219:8888" : "23.21.177.106:3000"
+    implicitcad_api_server = Rails.env.development? ? "172.16.42.4:8888" : "23.21.177.106:3000"
     #implicitcad_api_server = "23.21.177.106:3000"
   end
 
   def extopenscad(f, format)
-    RestClient.post("#{api_server_url}/implicit_cad/", :input => f, :output_format => format) {|response, request, result| response }
+    puts "sending to API.."
+    response = Typhoeus::Request.post("http://#{api_server_url}/implicit_cad/",
+      :body => {
+        :format => format,
+        :input => File.open(f.path,"r")
+      }
+    )
+=begin
+    puts @@curl.inspect
+    puts 1
+    @@curl.http_post( Curl::PostField.file('input', f.path), Curl::PostField.content('output_format', format) )
+    puts 2
+    @@curl.perform
+    puts 3
+    @@curl.body_str
+=end
+    puts "sending to API.. [ DONE ]"
+    return response
   end
 
   add_method_tracer :extopenscad, 'Custom/RenderController/extopenscad', :metric => true

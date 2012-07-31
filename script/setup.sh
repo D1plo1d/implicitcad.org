@@ -20,6 +20,9 @@ sudo apt-get install -y meshlab
 sudo apt-get install -y libicu-dev
 #sudo apt-get install -y qt4-make
 
+# Curb dependencies
+sudo apt-get install -y libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+
 # Finally install bundler if it isn't already
 which bundle || sudo gem install bundler --no-rdoc --no-ri
 
@@ -32,4 +35,4 @@ echo "cd /vagrant" >> /home/vagrant/.bashrc
 
 cd /vagrant
 
-rails s -d
+rails s -d -p 9001

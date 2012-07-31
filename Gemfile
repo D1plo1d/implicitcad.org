@@ -78,7 +78,8 @@ gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap', :git => "git://github.com/f3ndot/will_paginate-bootstrap.git"
 gem 'colored'
 gem 'rdiscount'
-gem 'rest-client'
+gem 'rest-client' # legacy, horrible performance over multiple requests
+gem 'typhoeus', "0.5.0.pre" # way better performance over multiple requests
 gem 'newrelic_rpm'
 
 # To use Jbuilder templates for JSON
