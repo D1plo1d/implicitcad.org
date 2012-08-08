@@ -95,6 +95,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #geometry.mergeVertices()
     #geometry.computeTangents()
     #geometry.computeMorphNormals()
+    geometry.computeFaceNormals()
     THREE.GeometryUtils.center(geometry)
 
     @clearGeometry()
