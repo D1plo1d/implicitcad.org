@@ -48,7 +48,14 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
 
     @render = @render.lazy(20) 
-    @renderer = new THREE.WebGLRenderer()
+    try
+      @renderer = new THREE.WebGLRenderer()
+    catch error
+      html = ""
+      html += "<div class='no-web-gl-error'><h3>Your web browser does not appear to have webgl enabled.</h3>"
+      html += "<p>We need WebGL to show your implicitCAD 3d models. "
+      html += "Please enable WebGL or download a newer browser that is WebGL enabled</p></div>"
+      @$viewer.html(html)
     #@renderer = new THREE.CanvasRenderer()
     @renderer.setSize( @$viewer.innerWidth(), @$viewer.innerHeight() )
 
