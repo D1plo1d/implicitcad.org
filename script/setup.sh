@@ -7,7 +7,7 @@ set -o xtrace
 
 sudo apt-get update -y -qq
 sudo apt-get install -y -q git curl
-sudo apt-get install libsqlite3-dev
+sudo apt-get install -y libsqlite3-dev
 
 # Ruby 1.9
 sudo apt-get install -y -q ruby1.9.1 ruby1.9.1-dev \
