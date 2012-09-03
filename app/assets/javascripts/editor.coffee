@@ -49,7 +49,9 @@ $ ->
       url: 'http://23.21.177.106:8000/render/'
       data: {source: codeMirror.getValue()}
       dataType: "jsonp"
-      success: (shape, output) ->
+      success: (response) ->
+        console.log response
+        [shape, output] = response
         $(".stl-viewer").stlViewer( "loadGeometry", shape ) if shape?
         output_html = output.replace("\n", "<br/>")
         if shape?
