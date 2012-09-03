@@ -182,6 +182,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
   _mouseStart: (e) ->
     @_mouse_click_pos = [e.pageX, e.pageY]
     @_rotation_click_pos = if @mesh? then [@mesh.rotation.x, @mesh.rotation.z] else [0,0]
+    @_position_click_pos = if @mesh? then [@mesh.position.y, @mesh.position.x] else [0,0]
     @_dragging = true
 
 
@@ -196,6 +197,10 @@ $.widget "ui.stlViewer", $.ui.mouse,
     mouse_pos = [e.pageX, e.pageY]
     @_mouse_delta = ( mouse_pos[i] - @_mouse_click_pos[i] for i in [0,1] )
 
-    @mesh.rotation.x = @_rotation_click_pos[0] + @_mouse_delta[1] / 50
-    @mesh.rotation.z = @_rotation_click_pos[1] + @_mouse_delta[0] / 50
+    if e.metaKey == true
+      @mesh.position.y = @_position_click_pos[0] + @_mouse_delta[1] / 2
+      @mesh.position.x = @_position_click_pos[1] + @_mouse_delta[0] / 2
+    else
+      @mesh.rotation.x = @_rotation_click_pos[0] + @_mouse_delta[1] / 50
+      @mesh.rotation.z = @_rotation_click_pos[1] + @_mouse_delta[0] / 50
     @render()
