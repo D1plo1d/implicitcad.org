@@ -42,84 +42,21 @@ $ ->
   # Sending the code to the server to render
   $(".btn-render").click =>
     $(".console").html("<p><span class='label label-info'>Please hold.</span> Our best server imps are now rendering your file.</p>")
-    
+
     $(".stl-viewer").stlViewer("clearGeometry")
 
-    post = $.post '/render', codeMirror.getValue(), "script"
-
-    post.success (response) ->
-      console.log response["url"]
-      poll = =>
-        console.log "polling"
-        $.ajax response["url"], async: false, contentType: "application/json", dataType: 'jsonp', success: (response) ->
-          console.log response
-          if response["status"] == 500
-            $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{response["std_io"].replace("\n", "<br/>")}</p>")
-          if response["status"] == 202
-            poll.delay(500)
-          if response["status"] == 201
-            $(".console").append("<p>#{response["std_io"].replace("\n", "<br/>")}</p>")
-
-            if response["format"] == "stl"
-              $(".stl-viewer").stlViewer("loadSTL", response["output"])
-            if response["format"] == "THREE.Geometry"
-              console.log "js!"
-              eval( response["output"] )
-              $(".stl-viewer").stlViewer( "loadGeometry", new Shape() )
-            
-          return true
-      poll.delay(500)
-
-    post.error ->
-      $(".console").append "<p class='error'><span class='label label-important'>Error</span> <b>Oh no!</b> Something has gone wrong while we were rendering your file</p>"
-      $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
-      $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
-
-    ###
-    post.success (response) ->
-      console.log response
-      # erroring out on stderr
-      if response["stderr"]? and response["stderr"].trim().length > 0
-        $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{response["stderr"].replace("\n", "<br/>")}</p>")
-        return
-      # erroring out on no data
-      return rendering_error() if response["data"].length == 0
-
-      console.log response["format"]
-      console.log response["stdout"]
-
-      # displaying the console output
-      $(".console").append "<p>#{response["stdout"]}</p>"
-
-      # displaying the output in a viewer
-      $(".stl-viewer").stlViewer("loadSTL", response["data"]) if response["format"] == "stl"
-
-      if response["format"] == "utf-8"
-        $(".stl-viewer").stlViewer( "clearGeometry" )
-        geometries = 0
-        merged_model = null
-
-        callback = (current_model) =>
-          geometries += 1
-
-          # Merging the partial geometries
-          if merged_model != null
-            THREE.GeometryUtils.merge(merged_model, current_model)
-          else
-            merged_model = current_model
-
-          # Once the geometry is complete load it in to the viewer
-          if geometries == response["data"].length
-            $(".stl-viewer").stlViewer( "loadGeometry", merged_model )
-
-        for utf in response["data"]
-          new THREE.UTF8Loader.prototype.createModel utf, callback, 100, 0,0,0
-
-      if response["format"] == "THREE.Geometry"
-        console.log "js!"
-        eval( response["data"] )
-        $(".stl-viewer").stlViewer( "loadGeometry", new Shape() )
-
-      # W00t it worked!
-      $(".console").append "<p><span class='label label-success'>Success</span> Your file has rendered successfully. The server imps are very happy.</p>"
-    ###
+    post = $.ajax
+      url: 'http://23.21.177.106:8000/render/'
+      data: {source: codeMirror.getValue()}
+      dataType: "jsonp"
+      success: (shape, output) ->
+        $(".stl-viewer").stlViewer( "loadGeometry", shape ) if shape?
+        output_html = output.replace("\n", "<br/>")
+        if shape?
+          $(".console").append("<p>#{output_html}</p>")
+        else
+          $(".console").append("<p class='error'><span class='label label-important'>Error</span> #{output_html}</p>")
+      error: ->
+        $(".console").append "<p class='error'><span class='label label-important'>Error</span> <b>Oh no!</b> Something has gone wrong while we were rendering your file</p>"
+        $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
+        $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
