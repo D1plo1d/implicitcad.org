@@ -1,0 +1,30 @@
+.content-container-wrapper
+  .index
+    .container
+      .row
+        .span12
+          %h1 Examples!
+
+      - examples.each do |example|
+        - code = example_code example
+        - codelines = code.split("\n").length
+        %br/
+        %br/
+        .row
+          - if cycle("even", "odd") == "odd"
+            .span9
+              %pre= example_code example
+              - (1.. 6 - codelines).each do |n|
+                %br/
+              %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/#{example}"} Try this code!
+            .span3
+              .well{style: "height: 150px; background:url('/assets/examples-#{example}.png') no-repeat 50% 65%"}
+          - else
+            .span3
+              .well{style: "height: 150px; background:url('/assets/examples-#{example}.png') no-repeat 50% 65%"}
+            .span9
+              %pre= example_code example
+              - (1.. 6 - codelines).each do |n|
+                %br/
+              %a.btn.btn-success.btn-large.btn-h2-align.pull-right{href: "/examples/#{example}"} Try this code!
+

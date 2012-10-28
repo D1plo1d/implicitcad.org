@@ -1,0 +1,2 @@
+linear_extrude(height(x,y) = 10 + 5*cos(x) + 5*cos(y) )
+    circle(10);

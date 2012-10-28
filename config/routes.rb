@@ -3,11 +3,15 @@ ImplicitCadOrg::Application.routes.draw do
   root :to => "pages#index"
 
   match "docs", :to => "pages#docs"
+  match "docs/api", :to => "pages#api"
+  match "docs/tutorial", :to => "pages#tutorial"
+  match "docs/tutorialSCAD", :to => "pages#tutorial"
 
-  match "dev", :to => "pages#dev"
+  match "faq", :to => "pages#faq"
 
   match "editor", :to => "pages#editor"
 
+  match "examples", :to => "pages#examples"
   match "examples/:example", :to => "pages#editor"
 
   match "render", :to => "renderers#render_scad"

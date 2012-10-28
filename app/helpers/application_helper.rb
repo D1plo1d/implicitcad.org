@@ -9,4 +9,19 @@ module ApplicationHelper
     File.exists?(File.join Rails.root, "config", "implicit-cad-examples", "#{example_name.to_s.gsub("_", "-")}.escad")
   end
 
+  
+
+  def examples
+    File.read(File.join Rails.root, "config", "implicit-cad-examples.txt").split("\n")
+  end
+
+  def example_code(example)
+    File.read(File.join Rails.root, "config", "implicit-cad-examples", "#{example}.escad")
+  end
+
+  def example_image_url(example)
+    "/assets/examples-#{example}.png"
+  end
+
+
 end

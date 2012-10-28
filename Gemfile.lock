@@ -128,9 +128,9 @@ GEM
     method_source (0.7.1)
     mime-types (1.18)
     multi_json (1.3.6)
-    mysql2 (0.3.11)
     newrelic_rpm (3.4.0.1)
     open4 (1.3.0)
+    pg (0.14.1)
     polyglot (0.3.3)
     pry (0.9.9.6)
       coderay (~> 1.0.5)
@@ -232,8 +232,8 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   json
-  mysql2
   newrelic_rpm
+  pg
   pry
   rails (= 3.2.5)
   rdiscount

@@ -1,0 +1,8 @@
+.content-container-wrapper
+  .index
+    .container
+      .row
+        .span12.docs
+          %h1 ImplicitCAD Documentation
+          :markdown
+            #{File.read(File.join(File.dirname(__FILE__), "api.md"))}
