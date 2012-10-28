@@ -1,0 +1,6 @@
+union() {
+  cylinder(r=19, h=10, $fn=6, center=true);
+  cylinder(r=10, h=40);
+  rotate_extrude(4*360, translate=[0,38])
+    translate ([10,0]) square([8,4], center=true);
+}

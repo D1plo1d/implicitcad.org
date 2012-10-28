@@ -18,7 +18,15 @@ class PagesController < ApplicationController
     @editor = false
   end
 
+  def api
+    @editor = false
+  end
+
   def dev
+    @editor = false
+  end
+
+  def examples
     @editor = false
   end
 
