@@ -17,3 +17,4 @@
 //= require_tree ./codemirror/
 //= require_tree ./iobar/
 //= require_tree .
+// require bootstrap
