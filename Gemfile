@@ -6,8 +6,8 @@ gem 'rails', '3.2.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # Database
-gem 'sqlite3'
-gem 'mysql2', :group => :production
+gem 'sqlite3', :group => :development
+gem 'pg', :group => :production
 
 
 # Gems used only for assets and not required
