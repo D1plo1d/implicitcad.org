@@ -63,12 +63,13 @@ end
 
 # Other Libraries
 gem "actionmailer"
-gem "carrierwave"
-gem 'client_side_validations'
-gem 'carmen-rails', :git => "git://github.com/lukast-akra/carmen-rails.git"
-gem 'responders'
+# Carrierwave allows file upload
+# gem "carrierwave"
+# gem 'client_side_validations'
+# gem 'carmen-rails', :git => "git://github.com/lukast-akra/carmen-rails.git"
+# gem 'responders'
 gem 'inherited_resources'
-gem 'factory_girl_rails', '~> 3.0'
+gem 'factory_girl_rails', '~> 3.0', :group => :development
 gem 'rfc822'
 gem 'pry'
 gem 'god', :require => false
