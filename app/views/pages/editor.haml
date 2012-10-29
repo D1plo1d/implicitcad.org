@@ -5,7 +5,7 @@
       = navigation_button_small "/", "Home"
       %a.btn.dropdown-toggle{ "data-toggle" => "dropdown"}
         Docs
-        .caret
+        %i.caret
       %ul.dropdown-menu
         = navigation_item "/docs", "Tutorial"
         = navigation_item "/docs/api", "API Reference"
@@ -39,17 +39,28 @@
 
   .output.well
     .btns-output
-      %a.btn.btn-toggle-transparency{href: "#"}
-        Toggle Tranparency
-      %a.btn.btn-zoom-out{href: "#"}
-        =#%i.icon-zoom-out
-        Zoom Out
-      %a.btn.btn.btn-zoom-in{href: "#"}
-        =#%i.icon-zoom-in
-        Zoom In
-      %a.btn.btn-primary.btn-render{href: "#"}
-        Render
-    %h3 Model
+      //%a.btn.btn-toggle-transparency{href: "#"}
+      //  Toggle Tranparency
+      .btn-toolbar
+        .btn-group{:style => "margin-right:210px"}
+          %a.btn.btn-zoom-out{href: "#"}
+            =#%i.icon-zoom-out
+            Zoom Out
+          %a.btn.btn.btn-zoom-in{href: "#"}
+            =#%i.icon-zoom-in
+            Zoom In
+        .btn-group
+          %a.btn.btn-primary.btn-render{href: "#"}
+            Render
+          %a.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown"}
+            %i.icon-download-alt
+          %ul.dropdown-menu
+            %li
+              %a STL
+            %li
+              %a OBJ
+            %li
+              %a SVG
     .well.viewer
       .svg-viewer
       .stl-viewer

@@ -33,7 +33,7 @@ module ApplicationHelper
 
   def navigation_item(url, title)
     if current_page? url
-      content_tag("li", link_to(title, url), class: "disabled-navigation")
+      content_tag("li", link_to(title, url), class: "disabled-generic")
     else
       content_tag("li", link_to(title, url))
     end
