@@ -38,9 +38,7 @@ $ ->
   $keys.on "keydown", null, "F5", -> $(".btn-render").click(); return false
   $keys.on "keydown", null, "F6", -> $(".btn-render").click(); return false
 
-
-  # Sending the code to the server to render
-  $(".btn-render").click =>
+  render_and_load = -> 
     $(".console").html("<p><span class='label label-info'>Please hold.</span> Our best server imps are now rendering your file.</p>")
 
     $(".stl-viewer").stlViewer("clearGeometry")
@@ -62,3 +60,9 @@ $ ->
         $(".console").append "<p class='error'><span class='label label-important'>Error</span> <b>Oh no!</b> Something has gone wrong while we were rendering your file</p>"
         $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
         $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
+
+
+  # Sending the code to the server to render
+  $(".btn-render").click => render_and_load()
+    
+  $(window).load => do render_and_load()  if content.length > 2
