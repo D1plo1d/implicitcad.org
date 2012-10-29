@@ -13,12 +13,17 @@
         %h1 ImplicitCAD
     .nav
       .btn-group
-        %a.btn.btn-large{:href=> "/docs"}Tutorial
-        %a.btn.btn-large{:href=> "/examples"}Examples
-        %a.btn.btn-large{:href=> "/docs/api"}API Docs
-        %a.btn.btn-large{:href=> "http://github.com/colah/ImplicitCAD"}Code
-        %a.btn.btn-large{:href=> "/faq"}FAQ
-        %a.btn.btn-large{:href=> "/editor"}Try it online!
+        = navigation_button "/", "Home"
+        %a.btn.btn-large.dropdown-toggle{ "data-toggle" => "dropdown"}
+          Docs
+          .caret
+        %ul.dropdown-menu
+          = navigation_item "/docs", "Tutorial"
+          = navigation_item "/docs/api", "API Reference"
+          = navigation_item "/faq", "FAQ"
+        = navigation_button "/examples", "Examples"
+        = navigation_button "http://github.com/colah/ImplicitCAD", "Github"
+        = navigation_button "/editor", "Try It Online!"
 
   = yield
 
