@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   include ApplicationHelper
 
-  caches_page :index, :editor, :docs
+  caches_page :index, :editor, :examples, :api, :faq, :tutorial
 
   def index
     @editor = false
