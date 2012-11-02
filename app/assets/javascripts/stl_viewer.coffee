@@ -128,6 +128,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading}) )
     @mesh.doubleSided = true
     @mesh.overdraw = true
+    @mesh.useQuaternion = true
+    #@mesh.quaternion = THREE.Quaternion.prototype.set(1,0,0,0)
 
     #@mesh.castShadow = true
     #@mesh.receiveShadow = true
@@ -188,7 +190,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
   _mouseStart: (e) ->
     @_mouse_click_pos = [e.pageX, e.pageY]
-    @_rotation_click_pos = if @mesh? then [@mesh.rotation.x, @mesh.rotation.z] else [0,0]
+    @_quaternion_click_pos = if @mesh? then @mesh.quaternion else THREE.Quaternion.prototype.set(1,0,0,0)
     @_position_click_pos = if @mesh? then [@mesh.position.y, @mesh.position.x] else [0,0]
     @_dragging = true
 
@@ -199,7 +201,6 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
   _mouseDrag: (e) ->
     return true unless @_dragging and @mesh?
-
     # Get the relative mouse delta position
     mouse_pos = [e.pageX, e.pageY]
     @_mouse_delta = ( mouse_pos[i] - @_mouse_click_pos[i] for i in [0,1] )
@@ -208,6 +209,32 @@ $.widget "ui.stlViewer", $.ui.mouse,
       @mesh.position.y = @_position_click_pos[0] + @_mouse_delta[1] / 2
       @mesh.position.x = @_position_click_pos[1] + @_mouse_delta[0] / 2
     else
-      @mesh.rotation.x = @_rotation_click_pos[0] + @_mouse_delta[1] / 50
-      @mesh.rotation.z = @_rotation_click_pos[1] + @_mouse_delta[0] / 50
+      q = (x,y,z,w) -> new THREE.Quaternion(x,y,z,w)
+      qVA = (v,a) -> (new THREE.Quaternion()).setFromAxisAngle(v,a)
+      v = (x,y,z) -> new THREE.Vector3(x,y,z)
+      qm = (a,b) -> (new THREE.Quaternion).multiply a, b
+
+      p2_to_p3 = (x,y) ->
+        xmin = 680
+        xmax = 1200
+        ymin = 130
+        ymax = 430
+        xav = (xmax + xmin)/2
+        yav = (ymax + ymin)/2
+        s = Math.min (xmax - xmin), (ymax - ymin)
+        x = 2*(x-xav)/s
+        y = 2*(y-yav)/s
+        s = Math.sqrt (x*x + y*y)
+        if s > 1
+          x = x / s
+          y = y / s
+        z = Math.max 0, (1-s)
+        return v(x,y,z)
+      p2 = p2_to_p3 mouse_pos[0], mouse_pos[1]
+      p1 = p2_to_p3 @_mouse_click_pos[0], @_mouse_click_pos[1]
+      dp = p1.dot(p2)
+      dpm = Math.min 1, dp
+      a = Math.acos (dpm)
+      n = p1.crossSelf(p2).normalize()
+      @mesh.quaternion = qm @_quaternion_click_pos, qVA(n,a)
     @render()
