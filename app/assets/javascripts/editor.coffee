@@ -38,9 +38,6 @@ $ ->
     deserialize: (content) => codeMirror.setValue(content)
     reset:  => codeMirror.setValue("")
 
-  # Insert the stl viewer
-  $stlViewer = $(".stl-viewer").stlViewer()
-
   # Zoom buttons
   $(".btn-zoom-out").click => $stlViewer.stlViewer("zoom", -1)
   $(".btn-zoom-in").click => $stlViewer.stlViewer("zoom", +1)
@@ -80,8 +77,20 @@ $ ->
         $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
         $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
 
+  $(".download-STL").click => $.ajax
+      url: 'http://23.21.177.106:8000/render/'
+      data: {source: codeMirror.getValue(), format: "STL"}
+      dataType: "jsonp"
+      success: (response) ->
+         [shape, output] = response
+         uriContent = "data:model/stl," + encodeURIComponent(shape)
+         location.href = uriContent
 
+  # Insert the stl viewer
+  # DO THIS LAST -- it may fail, and we want the other things set up.
+  $stlViewer = $(".stl-viewer").stlViewer()
   # Sending the code to the server to render
   $(".btn-render").click => render_and_load()
-    
+   
   $(window).load => do render_and_load()  if content.length > 2
+
