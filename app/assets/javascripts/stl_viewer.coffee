@@ -67,6 +67,21 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @render()
     console.log "moo? init!"
 
+    bounds = @$viewer[0].getBoundingClientRect()
+    yav = (bounds.top + bounds.bottom)/2
+    xav = (bounds.left + bounds.right)/2
+    w = Math.min bounds.right - bounds.left, bounds.bottom - bounds.top
+    @p2_to_p3 = (x,y) ->
+        xs = 2*(x-xav)/w
+        ys = 2*(y-yav)/w
+        s = Math.sqrt (xs*xs + ys*ys)
+        if s > 1
+          xs = xs / s
+          ys = ys / s
+        z = Math.sqrt(1 - Math.min 1, s*s)
+        test = v(xs,ys,z)
+        return test
+
 
   # mode = "perspective" or "orthographic"
   setCamera: (mode) ->
@@ -81,6 +96,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @camera.position.z = 100 #TODO: auto zoom to fit loaded stls in the viewer
     @scene.add( @camera )
     @render()
+    console.log(@$viewer)
 
 
   setTransparent: (transparent, render = true) ->
@@ -148,7 +164,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@scene.add( @mesh, material )
     @scene.add(@mesh)
     # reset rotation
-    @mesh.rotation.x = -3/4 * Math.PI/2
+    # @mesh.rotation.x = 1/2 * Math.PI/2
+    @mesh.quaternion = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(1,0,0), Math.PI/2)
     # reset mouse drag
     @dragging = false
     @setTransparent(@transparent, false)
@@ -165,9 +182,9 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
 
   zoom: (delta) ->
-    multiplier = 1+Math.abs(delta)
+    multiplier = 1+Math.abs(delta)/5
     multiplier = ( if delta < 0 then multiplier else 1/multiplier )
-
+    console.log(@camera.scale)
     @camera.scale.x *= multiplier
     @camera.scale.y *= multiplier
     @camera.scale.z *= multiplier
@@ -216,26 +233,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
       v = (x,y,z) -> new THREE.Vector3(x,y,z)
       qm = (a,b) -> (new THREE.Quaternion).multiply a, b
 
-      p2_to_p3 = (x,y) ->
-        xmin = 775
-        xmax = 1400
-        ymin = 120
-        ymax = 450
-        xav = (xmax + xmin)/2
-        yav = (ymax + ymin)/2
-        w = Math.min (xmax - xmin), (ymax - ymin)
-        xs = 2*(x-xav)/w
-        ys = 2*(y-yav)/w
-        s = Math.sqrt (xs*xs + ys*ys)
-        if s > 1
-          xs = xs / s
-          ys = ys / s
-        z = Math.sqrt(1 - Math.min 1, s*s)
-        test = v(xs,ys,z)
-        console.log(x,y,s,xs,ys,z,test)
-        return test
-      p1 = p2_to_p3 @_mouse_click_pos[0], @_mouse_click_pos[1]
-      p2 = p2_to_p3 mouse_pos[0], mouse_pos[1]
+      p1 = @p2_to_p3 @_mouse_click_pos[0], @_mouse_click_pos[1]
+      p2 = @p2_to_p3 mouse_pos[0], mouse_pos[1]
       dp = p1.dot(p2)
       dpm = Math.min 1, dp
       a = Math.acos (dpm)
