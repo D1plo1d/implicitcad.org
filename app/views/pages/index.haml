@@ -6,7 +6,7 @@
         .span12.center-generic
           %h1 ImplicitCAD: Powerful, Open-Source, Programmatic CAD
       %br
-      %br
+      %hr
       .row
         .span8
           %h2 Step 1: Code, Step 2: Things!
@@ -15,9 +15,9 @@
             Try out this code!
       .row
         .span8
-          %pre= escad_example(:twisted_extrusion)
+          %pre.highlightable= escad_example(:twisted_extrusion)
         .span4.center-generic
-          .well{style: "height: 176px; background:url('/assets/example1-small.png') no-repeat 50% 65%"}
+          .well{style: "height: 188px; background:url('/assets/example1-small.png') no-repeat 50% 65%"}
       %br
       .row
         .span12.center-generic
@@ -32,9 +32,9 @@
         .span12
           %p.xlarge With the explosion of 3D printing, designing 3D objects has become an even more important problem. And it's a complicated one. We need to design complicated objects that precisely interface with each other. And often we don't want to just design a single object, but classes of objects, parameterized by variables. And we need to do this in collaboration.
 
-          %p.xlarge There are trivial cases, like a screw driver of varying length or the width of a table. Traditional geometric constraints can suffice here. But what if we want a key based of a list of numbers describing the heights of a locks pins? Now we need programming.
+          %p.xlarge There are trivial cases, like a screw driver of varying length or the width of a table. Traditional geometric constraints can suffice here. But what if we want a key based of a list of numbers describing the heights of a lock's pins? Now we need programming.
 
-          %p.xlarge But that's only the beginning. We can abstract away the stupid work humans do in designing objects. We can unit test them. We can build DSLs. We can put them on github.
+          %p.xlarge But that's only the beginning. We can abstract away the stupid work humans do in designing objects. We can build DSLs. We can unit test objects and put them on github.
 
           %p.xlarge-strong ImplicitCAD is a project dedicated to using the power of math and computer science to get stupid design problems out of the way of the 3D printing revolution. 
 

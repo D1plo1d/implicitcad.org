@@ -1,4 +1,5 @@
 #= require stl_viewer
+#= require codemirror_extopenscad
 $ ->
   $editor = $(".editor")
 
@@ -7,12 +8,6 @@ $ ->
   content = if ( location_array.length >= 2 ) then location_array[1].replace(/%20/g, " ").replace(/\\n/g, "\n") else $editor.html()
 
   $editor.html("")
-
-  wordlist = (str) ->
-    obj = {}
-    words = str.split " "
-    obj[word] = true for word in words
-    obj
 
   console_reset = () ->
     console.log("Resetting Console...")
@@ -26,19 +21,6 @@ $ ->
   #  builder = "<" + name + " "
   #  for arg in args:
        
-
-  CodeMirror.defineMIME "text/x-extopenscad",
-    name: "clike"
-    keywords: wordlist("circle for if else while module " + 
-                    "circle square polygon " + 
-                    "sphere cube cylinder " + 
-                    "union difference intersection " + 
-                    "translate scale rotate " + 
-                    "linear_extrude rotate_extrude " +
-                    "pack shell" )
-    blockKeywords: wordlist "else for if module"
-    atoms: wordlist "null true false" 
-
   codeMirror = CodeMirror $editor[0],
     value: content
     mode:  "text/x-extopenscad"

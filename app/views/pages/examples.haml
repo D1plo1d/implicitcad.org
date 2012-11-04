@@ -15,7 +15,7 @@
             .offset2.span8{:style => "text-align: center;"}
               - (1.. (6 - codelines)/2).each do |n|
                 %br/
-              %pre{:style => "text-align: left;"}= example_code example
+              %pre.highlightable{:style => "text-align: left;"}= example_code example
               - (1.. (6 - codelines)/4).each do |n|
                 %br/
               %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/#{example}"} Try this code!
@@ -27,7 +27,7 @@
             .span8{:style => "text-align: center;"}
               - (1.. (6 - codelines)/2).each do |n|
                 %br/
-              %pre{:style => "text-align: left;"}= example_code example
+              %pre.highlightable{:style => "text-align: left;"}= example_code example
               - (1.. (6 - codelines)/4).each do |n|
                 %br/
               %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/#{example}"} Try this code!
