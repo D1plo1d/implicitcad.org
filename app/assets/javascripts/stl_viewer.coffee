@@ -1,6 +1,8 @@
 #= require stl_geometry
 #= require iobar/io-bar
 
+v = (x,y,z) -> new THREE.Vector3(x,y,z)
+
 $.widget "ui.stlViewer", $.ui.mouse,
   options: {}
 
@@ -65,6 +67,21 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @render()
     console.log "moo? init!"
 
+    bounds = @$viewer[0].getBoundingClientRect()
+    yav = (bounds.top + bounds.bottom)/2
+    xav = (bounds.left + bounds.right)/2
+    w = Math.min bounds.right - bounds.left, bounds.bottom - bounds.top
+    @p2_to_p3 = (x,y) ->
+        xs = 2*(x-xav)/w
+        ys = 2*(y-yav)/w
+        s = Math.sqrt (xs*xs + ys*ys)
+        if s > 1
+          xs = xs / s
+          ys = ys / s
+        z = Math.sqrt(1 - Math.min 1, s*s)
+        test = v(xs,ys,z)
+        return test
+
 
   # mode = "perspective" or "orthographic"
   setCamera: (mode) ->
@@ -79,6 +96,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     @camera.position.z = 100 #TODO: auto zoom to fit loaded stls in the viewer
     @scene.add( @camera )
     @render()
+    console.log(@$viewer)
 
 
   setTransparent: (transparent, render = true) ->
@@ -128,6 +146,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial({opacity:1,shading:THREE.SmoothShading}) )
     @mesh.doubleSided = true
     @mesh.overdraw = true
+    @mesh.useQuaternion = true
+    #@mesh.quaternion = THREE.Quaternion.prototype.set(1,0,0,0)
 
     #@mesh.castShadow = true
     #@mesh.receiveShadow = true
@@ -144,7 +164,8 @@ $.widget "ui.stlViewer", $.ui.mouse,
     #@scene.add( @mesh, material )
     @scene.add(@mesh)
     # reset rotation
-    @mesh.rotation.x = -3/4 * Math.PI/2
+    # @mesh.rotation.x = 1/2 * Math.PI/2
+    @mesh.quaternion = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(1,0,0), Math.PI/2)
     # reset mouse drag
     @dragging = false
     @setTransparent(@transparent, false)
@@ -161,9 +182,9 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
 
   zoom: (delta) ->
-    multiplier = 1+Math.abs(delta)
+    multiplier = 1+Math.abs(delta)/5
     multiplier = ( if delta < 0 then multiplier else 1/multiplier )
-
+    console.log(@camera.scale)
     @camera.scale.x *= multiplier
     @camera.scale.y *= multiplier
     @camera.scale.z *= multiplier
@@ -188,7 +209,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
   _mouseStart: (e) ->
     @_mouse_click_pos = [e.pageX, e.pageY]
-    @_rotation_click_pos = if @mesh? then [@mesh.rotation.x, @mesh.rotation.z] else [0,0]
+    @_quaternion_click_pos = if @mesh? then @mesh.quaternion else THREE.Quaternion.prototype.set(1,0,0,0)
     @_position_click_pos = if @mesh? then [@mesh.position.y, @mesh.position.x] else [0,0]
     @_dragging = true
 
@@ -199,7 +220,6 @@ $.widget "ui.stlViewer", $.ui.mouse,
 
   _mouseDrag: (e) ->
     return true unless @_dragging and @mesh?
-
     # Get the relative mouse delta position
     mouse_pos = [e.pageX, e.pageY]
     @_mouse_delta = ( mouse_pos[i] - @_mouse_click_pos[i] for i in [0,1] )
@@ -208,6 +228,16 @@ $.widget "ui.stlViewer", $.ui.mouse,
       @mesh.position.y = @_position_click_pos[0] + @_mouse_delta[1] / 2
       @mesh.position.x = @_position_click_pos[1] + @_mouse_delta[0] / 2
     else
-      @mesh.rotation.x = @_rotation_click_pos[0] + @_mouse_delta[1] / 50
-      @mesh.rotation.z = @_rotation_click_pos[1] + @_mouse_delta[0] / 50
+      q = (x,y,z,w) -> new THREE.Quaternion(x,y,z,w)
+      qVA = (v,a) -> (new THREE.Quaternion()).setFromAxisAngle(v,a)
+      v = (x,y,z) -> new THREE.Vector3(x,y,z)
+      qm = (a,b) -> (new THREE.Quaternion).multiply a, b
+
+      p1 = @p2_to_p3 @_mouse_click_pos[0], @_mouse_click_pos[1]
+      p2 = @p2_to_p3 mouse_pos[0], mouse_pos[1]
+      dp = p1.dot(p2)
+      dpm = Math.min 1, dp
+      a = Math.acos (dpm)
+      n = p1.crossSelf(p2).normalize()
+      @mesh.quaternion = qm qVA(n,a), @_quaternion_click_pos
     @render()
