@@ -56,11 +56,17 @@
             %i.icon-download-alt
           %ul.dropdown-menu
             %li
-              %a.download-STL{href: "#", download: "download.stl"} STL
+              %a.download-STL{href: "#", download: "download.stl"}
+                STL
             %li.disabled-generic
-              %a.download-OBJ OBJ
-            %li.disabled-generic
-              %a.download-SVG SVG
+              %a.download-OBJ
+                OBJ
+            %li
+              %a.download-SVG{href: "#", download: "download.svg"}
+                SVG
+            %li
+              %a.download-gcode-hacklab-laser{href: "#", download: "download.ngc"}
+                G-code (Hacklab Laser)
     .well.viewer
       .svg-viewer
       .stl-viewer

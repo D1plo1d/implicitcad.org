@@ -86,6 +86,24 @@ $ ->
          uriContent = "data:model/stl," + encodeURIComponent(shape)
          location.href = uriContent
 
+  $(".download-SVG").click => $.ajax
+      url: 'http://23.21.177.106:8000/render/'
+      data: {source: codeMirror.getValue(), format: "SVG"}
+      dataType: "jsonp"
+      success: (response) ->
+         [shape, output] = response
+         uriContent = "data:model/svg," + encodeURIComponent(shape)
+         location.href = uriContent
+
+  $(".download-hacklab-laser-cutter").click => $.ajax
+      url: 'http://23.21.177.106:8000/render/'
+      data: {source: codeMirror.getValue(), format: "gcode/hacklab-laser"}
+      dataType: "jsonp"
+      success: (response) ->
+         [shape, output] = response
+         uriContent = "data:model/gcode," + encodeURIComponent(shape)
+         location.href = uriContent
+
   # Insert the stl viewer
   # DO THIS LAST -- it may fail, and we want the other things set up.
   $stlViewer = $(".stl-viewer").stlViewer()
