@@ -14,6 +14,19 @@ $ ->
     obj[word] = true for word in words
     obj
 
+  console_reset = () ->
+    console.log("Resetting Console...")
+    $(".console").html("")
+
+  console_write = (text) ->
+    $(".console").append(text)
+    console.log("Writing to Console...")
+
+  #build_html = (name, args) ->
+  #  builder = "<" + name + " "
+  #  for arg in args:
+       
+
   CodeMirror.defineMIME "text/x-extopenscad",
     name: "clike"
     keywords: wordlist("circle for if else while module " + 
@@ -77,32 +90,29 @@ $ ->
         $(".console").append("<pre style='font-size: 5px; line-height: 5px'>       ▄██████████████▄▐█▄▄▄▄█▌\n      ██████▌▄▌▄▐▐▌███▌▀▀██▀▀\n      ████▄█▌▄▌▄▐▐▌▀███▄▄█▌\n      ▄▄▄▄▄██████████████▀</pre>")
         $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
 
-  $(".download-STL").click => $.ajax
-      url: 'http://23.21.177.106:8000/render/'
-      data: {source: codeMirror.getValue(), format: "STL"}
-      dataType: "jsonp"
-      success: (response) ->
-         [shape, output] = response
-         uriContent = "data:model/stl," + encodeURIComponent(shape)
-         location.href = uriContent
 
-  $(".download-SVG").click => $.ajax
+  export_and_download = (format_req, ext) -> 
+    console_reset()
+    console_write "<p>Preparing Export...</p>"
+    $.ajax
       url: 'http://23.21.177.106:8000/render/'
-      data: {source: codeMirror.getValue(), format: "SVG"}
-      dataType: "jsonp"
-      success: (response) ->
-         [shape, output] = response
-         uriContent = "data:model/svg," + encodeURIComponent(shape)
-         location.href = uriContent
-
-  $(".download-hacklab-laser-cutter").click => $.ajax
-      url: 'http://23.21.177.106:8000/render/'
-      data: {source: codeMirror.getValue(), format: "gcode/hacklab-laser"}
+      data: {source: codeMirror.getValue(), format: format_req}
       dataType: "jsonp"
       success: (response) ->
          [shape, output] = response
          uriContent = "data:model/gcode," + encodeURIComponent(shape)
-         location.href = uriContent
+         console_write("<p>Export Done! <a href=\""+uriContent+"\" download=\"download."+ ext+"\" class=\"download-link\"> Download Ready!</a></p>")
+         $(".download-link")[0].click()
+         return false
+
+  $(".download-STL").click =>
+      export_and_download "STL", "stl"
+
+  $(".download-SVG").click => 
+      export_and_download "SVG", "svg"
+
+  $(".download-gcode-hacklab-laser").click => 
+      export_and_download "gcode/hacklab-laser", "ngc"
 
   # Insert the stl viewer
   # DO THIS LAST -- it may fail, and we want the other things set up.
