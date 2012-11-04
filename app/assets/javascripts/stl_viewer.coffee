@@ -1,6 +1,8 @@
 #= require stl_geometry
 #= require iobar/io-bar
 
+v = (x,y,z) -> new THREE.Vector3(x,y,z)
+
 $.widget "ui.stlViewer", $.ui.mouse,
   options: {}
 
@@ -188,7 +190,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     return false
 
 
-  _mouseStart: (e) ->
+  _mouseStart: (e) =>
     @_mouse_click_pos = [e.pageX, e.pageY]
     @_quaternion_click_pos = if @mesh? then @mesh.quaternion else THREE.Quaternion.prototype.set(1,0,0,0)
     @_position_click_pos = if @mesh? then [@mesh.position.y, @mesh.position.x] else [0,0]
@@ -221,20 +223,22 @@ $.widget "ui.stlViewer", $.ui.mouse,
         ymax = 430
         xav = (xmax + xmin)/2
         yav = (ymax + ymin)/2
-        s = Math.min (xmax - xmin), (ymax - ymin)
-        x = 2*(x-xav)/s
-        y = 2*(y-yav)/s
-        s = Math.sqrt (x*x + y*y)
+        w = Math.min (xmax - xmin), (ymax - ymin)
+        xs = 2*(x-xav)/w
+        ys = 2*(y-yav)/w
+        s = Math.sqrt (xs*xs + ys*ys)
         if s > 1
-          x = x / s
-          y = y / s
-        z = Math.max 0, (1-s)
-        return v(x,y,z)
-      p2 = p2_to_p3 mouse_pos[0], mouse_pos[1]
+          xs = xs / s
+          ys = ys / s
+        z = Math.sqrt(1 - Math.min 1, s*s)
+        test = v(xs,ys,z)
+        console.log(x,y,s,xs,ys,z,test)
+        return test
       p1 = p2_to_p3 @_mouse_click_pos[0], @_mouse_click_pos[1]
+      p2 = p2_to_p3 mouse_pos[0], mouse_pos[1]
       dp = p1.dot(p2)
       dpm = Math.min 1, dp
-      a = Math.acos (dpm)
+      a = Math.asin (dpm)
       n = p1.crossSelf(p2).normalize()
       @mesh.quaternion = qm @_quaternion_click_pos, qVA(n,a)
     @render()
