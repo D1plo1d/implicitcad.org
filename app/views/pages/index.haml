@@ -1,39 +1,47 @@
 .content-container-wrapper
   .index
     .container
+      %br
       .row
-        .span12
-          %h2 ImplicitCAD: What is it?
-          %p ImplicitCAD is a programmatic CAD program, implemented in haskell. Unlike traditional CAD programs, programmatic CAD programs use text descriptions of objects, as in programming. Concepts like variables, control structures and abstraction are used, just as in programming. This provides a number of advantages:
-
-          %ul
-            %li Objects can abstracted and reused
-            %li Repetitive tasks can be automated
-            %li Objects can be designed parametrically
-            %li The usual tools for software development (like version control) can be used
-
-          %p The traditional example of programmatic CAD is OpenSCAD.
-
-          %p Generally, objects in programmatic CAD are built with Constructive Solid Geometry or CSG. Unions, intersections and differences of simpler shapes slowly build the object. ImplicitCAD supports all this and much more! For example, it provides rounded unions so that one can have smooth interfaces between objects.
-
-          %p It also directly provides GCode generation, and has a parser for OpenSCAD to make it easier for people to transition.
-
-          %p ImplicitCAD is very much a work in progress. The author considers it ready for beta testers and greatly appreciates bug reports.
-
-
+        .span12.center-generic
+          %h1 ImplicitCAD: Powerful, Open-Source, Programmatic CAD
+      %br
+      %br
       .row
-        .span12
-          %hr
-          .pull-right
-            %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/twisted_extrusion"} Try out this code!
-          %h2 Step 1: Write Code, Step 2: Things!
-
+        .span8
+          %h2 Step 1: Code, Step 2: Things!
+        .span4.center-generic
+          %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/twisted_extrusion"}
+            Try out this code!
       .row
         .span8
           %pre= escad_example(:twisted_extrusion)
-        .span4
+        .span4.center-generic
           .well{style: "height: 176px; background:url('/assets/example1-small.png') no-repeat 50% 65%"}
+      %br
+      .row
+        .span12.center-generic
+          %a.btn.btn-success.btn-large.btn-h2-align{href: "/examples/"}
+            See Other Examples!
+      %br
+      %hr
+      %br
+      .row
+        .span12
+          %h2 Why? Because These Are Problems Programmers Have Already Solved.
+        .span12
+          %p.xlarge With the explosion of 3D printing, designing 3D objects has become an even more important problem. And it's a complicated one. We need to design complicated objects that precisely interface with each other. And often we don't want to just design a single object, but classes of objects, parameterized by variables. And we need to do this in collaboration.
 
+          %p.xlarge There are trivial cases, like a screw driver of varying length or the width of a table. Traditional geometric constraints can suffice here. But what if we want a key based of a list of numbers describing the heights of a locks pins? Now we need programming.
+
+          %p.xlarge But that's only the beginning. We can abstract away the stupid work humans do in designing objects. We can unit test them. We can build DSLs. We can put them on github.
+
+          %p.xlarge-strong ImplicitCAD is a project dedicated to using the power of math and computer science to get stupid design problems out of the way of the 3D printing revolution. 
+
+
+        .span12.center-generic
+          %a.btn.btn-success.btn-large.btn-h2-align{href: "docs/faq"}
+            Check Out Our FAQ!
 
 
       .row
@@ -41,10 +49,10 @@
           %hr
 
           %h2 Want to give it a try?
-          %p.large Now after all that talk wouldn't it be nice to go and give ImplicitCAD a test run? Bet your expecting some big long installation instructions now?
+          %p.xlarge Now after all that talk wouldn't it be nice to go and give ImplicitCAD a test run? Bet your expecting some big long installation instructions now?
         
-          %p.large.italic Well not today! Today we're making this easy!
+          %p.xlarge.italic Well not today! Today we're making this easy!
         
-          %p.large  Just one click and you'll be SCADing in your web browser without so much as a "click accept to save this file"!
-
+          %p.xlarge  Just one click and you'll be SCADing in your web browser without so much as a "click accept to save this file"!
+        .span12.center-generic
           %a.btn.btn-large.btn-success.btn-top-margin{href: "/editor"} Start ImplicitCADing Today!
