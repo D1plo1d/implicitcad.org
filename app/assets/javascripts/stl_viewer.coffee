@@ -190,7 +190,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
     return false
 
 
-  _mouseStart: (e) =>
+  _mouseStart: (e) ->
     @_mouse_click_pos = [e.pageX, e.pageY]
     @_quaternion_click_pos = if @mesh? then @mesh.quaternion else THREE.Quaternion.prototype.set(1,0,0,0)
     @_position_click_pos = if @mesh? then [@mesh.position.y, @mesh.position.x] else [0,0]
@@ -217,10 +217,10 @@ $.widget "ui.stlViewer", $.ui.mouse,
       qm = (a,b) -> (new THREE.Quaternion).multiply a, b
 
       p2_to_p3 = (x,y) ->
-        xmin = 680
-        xmax = 1200
-        ymin = 130
-        ymax = 430
+        xmin = 775
+        xmax = 1400
+        ymin = 120
+        ymax = 450
         xav = (xmax + xmin)/2
         yav = (ymax + ymin)/2
         w = Math.min (xmax - xmin), (ymax - ymin)
@@ -238,7 +238,7 @@ $.widget "ui.stlViewer", $.ui.mouse,
       p2 = p2_to_p3 mouse_pos[0], mouse_pos[1]
       dp = p1.dot(p2)
       dpm = Math.min 1, dp
-      a = Math.asin (dpm)
+      a = Math.acos (dpm)
       n = p1.crossSelf(p2).normalize()
-      @mesh.quaternion = qm @_quaternion_click_pos, qVA(n,a)
+      @mesh.quaternion = qm qVA(n,a), @_quaternion_click_pos
     @render()
