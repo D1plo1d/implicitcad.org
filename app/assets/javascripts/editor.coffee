@@ -73,7 +73,7 @@ $ ->
         $(".console").append "<p class='error'>We're going to give those imps some really stern looks but in the mean time please try again or file a bug report if the problem persists.</p>"
 
 
-  export_and_download = (format_req, ext) -> 
+  export_and_download = (format_req, format_mime, ext) -> 
     console_reset()
     console_write "<p>Preparing Export...</p>"
     $.ajax
@@ -82,19 +82,19 @@ $ ->
       dataType: "jsonp"
       success: (response) ->
          [shape, output] = response
-         uriContent = "data:model/gcode," + encodeURIComponent(shape)
+         uriContent = "data:model/"+format_mime+"," + encodeURIComponent(shape)
          console_write("<p>Export Done! <a href=\""+uriContent+"\" download=\"download."+ ext+"\" class=\"download-link\"> Download Ready!</a></p>")
          $(".download-link")[0].click()
          return false
 
   $(".download-STL").click =>
-      export_and_download "STL", "stl"
+      export_and_download "STL", "stl", "stl"
 
   $(".download-SVG").click => 
-      export_and_download "SVG", "svg"
+      export_and_download "SVG", "svg", "svg"
 
   $(".download-gcode-hacklab-laser").click => 
-      export_and_download "gcode/hacklab-laser", "ngc"
+      export_and_download "gcode/hacklab-laser", "gcode", "ngc"
 
   # Insert the stl viewer
   # DO THIS LAST -- it may fail, and we want the other things set up.
