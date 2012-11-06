@@ -1,17 +1,24 @@
 .top-bar
   %h3 ImplicitCAD (ExtOpenSCAD) Cloud
   .pull-right
-    .btn-group
+    .btn-toolbar.btn-toolbar-mod
       = navigation_button_small "/", "Home"
-      %a.btn.dropdown-toggle{ "data-toggle" => "dropdown"}
-        Docs
-        %i.caret
-      %ul.dropdown-menu
-        = navigation_item "/docs", "Tutorial"
-        = navigation_item "/docs/api", "API Reference"
-        = navigation_item "/faq", "FAQ"
+      .btn-group
+        %a.btn.dropdown-toggle{ "data-toggle" => "dropdown"}
+          Docs
+          .caret
+        %ul.dropdown-menu
+          = navigation_item "/docs", "Tutorial"
+          = navigation_item "/docs/api", "API Reference"
+          = navigation_item "/faq", "FAQ"
       = navigation_button_small "/examples", "Examples"
-      = navigation_button_small "http://github.com/colah/ImplicitCAD", "Github"
+      .btn-group
+        %a.btn.dropdown-toggle{ "data-toggle" => "dropdown"}
+          Github
+          .caret
+        %ul.dropdown-menu
+          = navigation_item "http://github.com/colah/ImplicitCAD", "ImplicitCAD"
+          = navigation_item "http://github.com/colah/implicitcad.org", "implicitcad.org"
       = navigation_button_small "/editor", "Try It Online!"
   //.io-bar
   //  %a.btn.btn-small.file-new{href: "#"}

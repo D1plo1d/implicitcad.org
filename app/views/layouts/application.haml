@@ -12,17 +12,24 @@
       %a.logo-link{:href=> "/"}
         %h1 ImplicitCAD
     .nav
-      .btn-group
+      .btn-toolbar.btn-toolbar-mod
         = navigation_button "/", "Home"
-        %a.btn.btn-large.dropdown-toggle{ "data-toggle" => "dropdown"}
-          Docs
-          .caret
-        %ul.dropdown-menu
-          = navigation_item "/docs", "Tutorial"
-          = navigation_item "/docs/api", "API Reference"
-          = navigation_item "/faq", "FAQ"
+        .btn-group
+          %a.btn.btn-large.dropdown-toggle{ "data-toggle" => "dropdown"}
+            Docs
+            .caret
+          %ul.dropdown-menu
+            = navigation_item "/docs", "Tutorial"
+            = navigation_item "/docs/api", "API Reference"
+            = navigation_item "/faq", "FAQ"
         = navigation_button "/examples", "Examples"
-        = navigation_button "http://github.com/colah/ImplicitCAD", "Github"
+        .btn-group
+          %a.btn.btn-large.dropdown-toggle{ "data-toggle" => "dropdown"}
+            Github
+            .caret
+          %ul.dropdown-menu
+            = navigation_item "http://github.com/colah/ImplicitCAD", "ImplicitCAD"
+            = navigation_item "http://github.com/colah/implicitcad.org", "implicitcad.org"
         = navigation_button "/editor", "Try It Online!"
 
   = yield
